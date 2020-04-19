@@ -2,13 +2,21 @@ import React, { Component } from "react";
 
 class CountryTable extends Component {
   render() {
-    const { countries } = this.props;
+    const { countries, onSortByTotal, onSortByCountryName } = this.props;
     return (
       <table className="table table-striped">
         <thead>
           <tr>
-            <th>Country</th>
-            <th>Total</th>
+            <th>
+              <a href="/" onClick={onSortByCountryName}>
+                Country
+              </a>
+            </th>
+            <th>
+              <a href="/" onClick={onSortByTotal}>
+                Total
+              </a>
+            </th>
           </tr>
         </thead>
         <tbody>

@@ -21,7 +21,7 @@ class Covid extends Component {
 
     for (let i = 1; i < rows.length; i++) {
       const row = rows[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/); //splitting on ,
-      const countryName = row[0];
+      const countryName = row[0].replace(/"/g, "");
       const total = Number(row[4]);
       if (countryName !== "") {
         countries.push({
@@ -32,10 +32,43 @@ class Covid extends Component {
       }
     }
 
-    await new Promise((x) => setTimeout(x, 500));
+    await new Promise((x) => setTimeout(x, 1000));
 
     this.setState({ countries, allCountryTotal });
   }
+
+  sortByTotal = (countryA, countryB) => {
+    // 0 equal
+    // 1 greater
+    // -1 less
+    if (countryB.total > countryA.total) return 1;
+    else if (countryB.total < countryA.total) return -1;
+    else return 0;
+  };
+
+  handleOnSortByTotal = (event) => {
+    this.handleOnSortBy(event, this.sortByTotal);
+  };
+
+  sortByCountryName = (countryA, countryB) => {
+    // 0 equal
+    // 1 greater
+    // -1 less
+    if (countryA.name > countryB.name) return 1;
+    else if (countryA.name < countryB.name) return -1;
+    else return 0;
+  };
+
+  handleOnSortByCountryName = (event) => {
+    this.handleOnSortBy(event, this.sortByCountryName);
+  };
+
+  handleOnSortBy = (event, sortOperation) => {
+    event.preventDefault();
+    const countries = [...this.state.countries];
+    countries.sort(sortOperation);
+    this.setState({ countries });
+  };
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -51,7 +84,11 @@ class Covid extends Component {
         {allCountryTotal === 0 ? (
           <Loading />
         ) : (
-          <CountryTable countries={countries} />
+          <CountryTable
+            countries={countries}
+            onSortByTotal={this.handleOnSortByTotal}
+            onSortByCountryName={this.handleOnSortByCountryName}
+          />
         )}
       </div>
     );
