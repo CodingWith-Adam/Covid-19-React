@@ -2,7 +2,12 @@ import React, { Component } from "react";
 
 class CountryTable extends Component {
   render() {
-    const { countries, onSortByTotal, onSortByCountryName } = this.props;
+    const {
+      countries,
+      onSortByTotal,
+      onSortByCountryName,
+      onRowSelected,
+    } = this.props;
     return (
       <table className="table table-striped">
         <thead>
@@ -20,12 +25,21 @@ class CountryTable extends Component {
           </tr>
         </thead>
         <tbody>
-          {countries.map((country) => (
-            <tr key={country.name}>
-              <td>{country.name}</td>
-              <td>{country.total}</td>
-            </tr>
-          ))}
+          {countries.map((country) => {
+            const style = {
+              backgroundColor: "lightYellow",
+            };
+            return (
+              <tr
+                key={country.name}
+                style={country.selected ? style : null}
+                onClick={() => onRowSelected(country)}
+              >
+                <td>{country.name}</td>
+                <td>{country.total}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     );

@@ -2,11 +2,13 @@ import React, { Component } from "react";
 import Loading from "./Loading";
 import axios from "axios";
 import CountryTable from "./CountryTable";
+import Chart from "./Chart";
 
 class Covid extends Component {
   state = {
     countries: [],
     allCountryTotal: 0,
+    selectedCountries: [],
   };
 
   url =
@@ -36,6 +38,27 @@ class Covid extends Component {
 
     this.setState({ countries, allCountryTotal });
   }
+
+  handleOnRowSelected = (countryToUpdate) => {
+    const countries = [...this.state.countries];
+
+    const countryIndex = countries.findIndex(
+      (c) => c.name === countryToUpdate.name
+    );
+
+    const country = {
+      name: countryToUpdate.name,
+      total: countryToUpdate.total,
+      selected: !countryToUpdate.selected,
+    };
+
+    countries[countryIndex] = country;
+
+    this.setState({
+      countries,
+      selectedCountries: countries.filter((c) => c.selected),
+    });
+  };
 
   sortByTotal = (countryA, countryB) => {
     // 0 equal
@@ -75,7 +98,7 @@ class Covid extends Component {
   }
 
   render() {
-    const { countries, allCountryTotal } = this.state;
+    const { countries, allCountryTotal, selectedCountries } = this.state;
     return (
       <div>
         <h1 style={{ textAlign: "center" }}>
@@ -84,11 +107,15 @@ class Covid extends Component {
         {allCountryTotal === 0 ? (
           <Loading />
         ) : (
-          <CountryTable
-            countries={countries}
-            onSortByTotal={this.handleOnSortByTotal}
-            onSortByCountryName={this.handleOnSortByCountryName}
-          />
+          <div>
+            <Chart countries={selectedCountries} />
+            <CountryTable
+              countries={countries}
+              onSortByTotal={this.handleOnSortByTotal}
+              onSortByCountryName={this.handleOnSortByCountryName}
+              onRowSelected={this.handleOnRowSelected}
+            />
+          </div>
         )}
       </div>
     );
