@@ -7,6 +7,7 @@ import Chart from "./Chart";
 class Covid extends Component {
   state = {
     countries: [],
+    filterText: "",
     allCountryTotal: 0,
     selectedCountries: [],
   };
@@ -34,7 +35,9 @@ class Covid extends Component {
       }
     }
 
-    await new Promise((x) => setTimeout(x, 1000));
+    // await new Promise(function (x) {
+    //   setTimeout(x, 1000);
+    // });
 
     this.setState({ countries, allCountryTotal });
   }
@@ -97,8 +100,18 @@ class Covid extends Component {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  handleFilterTextChange = (event) => {
+    const filterText = event.target.value;
+    this.setState({ filterText: filterText });
+  };
+
   render() {
-    const { countries, allCountryTotal, selectedCountries } = this.state;
+    const {
+      countries,
+      allCountryTotal,
+      selectedCountries,
+      filterText,
+    } = this.state;
     return (
       <div>
         <h1 style={{ textAlign: "center" }}>
@@ -108,9 +121,22 @@ class Covid extends Component {
           <Loading />
         ) : (
           <div>
+            <input
+              value={filterText}
+              onChange={this.handleFilterTextChange}
+            ></input>
             <Chart countries={selectedCountries} />
             <CountryTable
-              countries={countries}
+              countries={countries.filter((country) => {
+                if (filterText === "") {
+                  return country;
+                }
+                return (
+                  country.name
+                    .toLowerCase()
+                    .indexOf(filterText.toLowerCase()) >= 0
+                );
+              })}
               onSortByTotal={this.handleOnSortByTotal}
               onSortByCountryName={this.handleOnSortByCountryName}
               onRowSelected={this.handleOnRowSelected}

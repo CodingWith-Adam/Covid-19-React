@@ -8,7 +8,7 @@ class Chart extends Component {
     if (countries.length === 0) return <div></div>;
 
     const data = {
-      labels: countries.map((country) => country.name),
+      labels: countries.map((country) => country.name), //[]strings
       datasets: [
         {
           data: countries.map((country) => country.total),
