@@ -1,6 +1,7 @@
 {
   "name": "covid-19",
   "version": "0.1.0",
+  "homepage": "https://CodingWith-Adam.github.io/Covid-19-React",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -9,12 +10,16 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
+    "gh-pages": "^2.2.0",
     "react": "^16.13.1",
+    "react-bootstrap-icons": "^1.0.1-alpha3",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

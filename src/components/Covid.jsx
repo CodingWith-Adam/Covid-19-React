@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import axios from "axios";
 import CountryTable from "./CountryTable";
 import Chart from "./Chart";
+import { Search } from "react-bootstrap-icons";
 
 class Covid extends Component {
   state = {
@@ -121,10 +122,23 @@ class Covid extends Component {
           <Loading />
         ) : (
           <div>
-            <input
-              value={filterText}
-              onChange={this.handleFilterTextChange}
-            ></input>
+            <div className="input-group input-group-lg mb-3">
+              <div className="input-group-prepend">
+                <span className="input-group-text" id="inputGroup-sizing-lg">
+                  <Search />
+                </span>
+              </div>
+              <input
+                type="text"
+                value={filterText}
+                onChange={this.handleFilterTextChange}
+                className="form-control"
+                aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-lg"
+                placeholder="Search"
+              />
+            </div>
+
             <Chart countries={selectedCountries} />
             <CountryTable
               countries={countries.filter((country) => {
