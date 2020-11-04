@@ -106,6 +106,26 @@ class Covid extends Component {
     this.setState({ filterText: filterText });
   };
 
+  clear= ()=>{
+    const countries = [...this.state.countries];
+
+    for(let i =0; i< countries.length;i++){
+      var c = countries[i];
+
+      const country = {
+        name: c.name,
+        total: c.total,
+        selected: false,
+      };
+      countries[i] = country;
+    }
+
+    this.setState({
+      countries,
+      selectedCountries: countries.filter((c) => c.selected),
+    });
+  }
+
   render() {
     const {
       countries,
@@ -118,10 +138,12 @@ class Covid extends Component {
         <h1 style={{ textAlign: "center" }}>
           All Country Total: {this.numberWithCommas(allCountryTotal)}
         </h1>
+        
         {allCountryTotal === 0 ? (
           <Loading />
         ) : (
           <div>
+            <button onClick={this.clear}>Clear</button>
             <div className="input-group input-group-lg mb-3">
               <div className="input-group-prepend">
                 <span className="input-group-text" id="inputGroup-sizing-lg">
